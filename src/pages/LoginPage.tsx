@@ -12,7 +12,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Library, AlertCircle } from "lucide-react";
+import { Loader2, Library, AlertCircle, Info } from "lucide-react";
+import { DEMO_ACCOUNTS, DEMO_PASSWORD } from "@/lib/demo";
+
+const IS_DEMO = import.meta.env.VITE_DEMO === "true";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -32,8 +35,7 @@ const LoginPage: React.FC = () => {
   const from =
     (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const signIn = async (email: string, password: string) => {
     setError("");
     setIsLoading(true);
 
@@ -53,6 +55,17 @@ const LoginPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    signIn(email, password);
+  };
+
+  const handleDemoLogin = (demoEmail: string) => {
+    setEmail(demoEmail);
+    setPassword(DEMO_PASSWORD);
+    signIn(demoEmail, DEMO_PASSWORD);
   };
 
   return (
@@ -113,6 +126,34 @@ const LoginPage: React.FC = () => {
               )}
             </Button>
           </form>
+
+          {IS_DEMO && (
+            <div className="mt-6 space-y-3">
+              <Alert>
+                <Info className="h-4 w-4" />
+                <AlertDescription>
+                  Live demo with sample data — no backend required. Changes
+                  reset when you close the tab.
+                </AlertDescription>
+              </Alert>
+              <p className="text-sm text-center text-muted-foreground">
+                Sign in instantly as
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                {DEMO_ACCOUNTS.map((account) => (
+                  <Button
+                    key={account.email}
+                    type="button"
+                    variant="outline"
+                    disabled={isLoading}
+                    onClick={() => handleDemoLogin(account.email)}
+                  >
+                    {account.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

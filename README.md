@@ -3,6 +3,49 @@
 A **web-based Library Management System** built with a **Node.js RESTful backend** and a **modern frontend**.
 This system manages **books, users, borrowing, returning, fines, and roles** following real-world library rules.
 
+**Live demo:** https://dlegendz.github.io/LMS/
+
+> The live demo runs entirely in the browser with sample data (no backend needed).
+> On the login page, click **Admin**, **Librarian**, or **Member** to sign in instantly.
+
+---
+
+## Screenshots
+
+### Login
+
+![Login page](docs/screenshots/login.png)
+
+### Admin
+
+| Dashboard | Users |
+| --- | --- |
+| ![Admin dashboard](docs/screenshots/admin-dashboard.png) | ![Admin users](docs/screenshots/admin-users.png) |
+
+| Books | Borrow Records |
+| --- | --- |
+| ![Admin books](docs/screenshots/admin-books.png) | ![Admin borrow records](docs/screenshots/admin-borrow-records.png) |
+
+| Fine Records |
+| --- |
+| ![Admin fine records](docs/screenshots/admin-fine-records.png) |
+
+### Librarian
+
+| Dashboard | Add Book |
+| --- | --- |
+| ![Librarian dashboard](docs/screenshots/librarian-dashboard.png) | ![Librarian add book](docs/screenshots/librarian-add-book.png) |
+
+### Member
+
+| Dashboard | Browse Books |
+| --- | --- |
+| ![Member dashboard](docs/screenshots/member-dashboard.png) | ![Member browse books](docs/screenshots/member-browse-books.png) |
+
+| My Borrows | My Fines |
+| --- | --- |
+| ![Member borrows](docs/screenshots/member-my-borrows.png) | ![Member fines](docs/screenshots/member-my-fines.png) |
+
 ---
 
 ## Project Purpose
@@ -49,9 +92,11 @@ This project was built to:
 
 ### Frontend
 
-* Web-based UI
+* React 18 + TypeScript
+* Vite
+* Tailwind CSS + shadcn/ui
+* React Router, TanStack Query, Axios
 * Connected via REST API
-* Runs locally
 
 ---
 
@@ -237,7 +282,40 @@ npm run dev
 Frontend runs on:
 
 ```
-http://localhost:5173
+http://localhost:8080
+```
+
+---
+
+## Demo Mode (No Backend)
+
+The frontend can run without the backend using in-browser sample data.
+This is the version deployed to GitHub Pages.
+
+```bash
+npm run dev:demo
+```
+
+Then open `http://localhost:8080/LMS/`.
+
+Demo mode is enabled by `VITE_DEMO=true` in `.env.demo`. The mock API lives in
+`src/lib/demo.ts` and follows the same rules as the backend (borrow limit of 3,
+14-day loans, late fines, fine limit). All demo accounts use the password `demo1234`.
+
+---
+
+## Deployment (GitHub Pages)
+
+Every push to `main` builds the demo and deploys it to GitHub Pages using
+`.github/workflows/deploy.yml`.
+
+One-time setup: in the repository go to **Settings → Pages → Build and deployment**
+and set **Source** to **GitHub Actions**.
+
+To build the demo locally:
+
+```bash
+npm run build:demo
 ```
 
 ---
@@ -247,7 +325,7 @@ http://localhost:5173
 Backend allows frontend access:
 
 ```js
-origin: "http://localhost:5173",
+origin: "http://localhost:8080",
 credentials: true
 ```
 
@@ -274,7 +352,7 @@ credentials: "include"
 ## Notes
 
 * Backend is **fully completed**
-* Frontend consumes backend APIs directly
-* No mock data
+* Frontend consumes backend APIs directly when run locally (`npm run dev`)
+* Mock data is only used by the demo build (`npm run dev:demo` / GitHub Pages)
 * Suitable for real-world extension
 

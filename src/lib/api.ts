@@ -1,5 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import type { ApiError } from "@/types/api";
+import { demoAdapter } from "@/lib/demo";
 
 const API_BASE_URL = "http://localhost:3000";
 
@@ -11,6 +12,11 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+// Demo build (GitHub Pages): serve every request from the in-browser mock
+if (import.meta.env.VITE_DEMO === "true") {
+  api.defaults.adapter = demoAdapter;
+}
 
 // Request interceptor
 api.interceptors.request.use(

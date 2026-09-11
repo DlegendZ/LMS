@@ -4,6 +4,8 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // GitHub Pages serves the demo build from https://<user>.github.io/LMS/
+  base: mode === "demo" ? "/LMS/" : "/",
   server: {
     host: "::",
     port: 8080,
